@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="path/to/prism.css"> </link>
+   <style>
+       /* 在这里可以添加自定义的 CSS 样式，例如调整按钮外观、代码块样式等 */
+       .tab-buttons {
+           margin-bottom: 10px;
+       }
+       .tab-buttons button {
+           padding: 5px 10px;
+           background-color: #eee;
+           border: 1px solid #ccc;
+           cursor: pointer;
+       }
+       .tab-buttons button.active {
+           background-color: #ddd;
+           font-weight: bold;
+       }
+   </style>
+</head>
+<body>
+
+  <div class="tab-buttons">
+    <button data-lang="javascript" class="active">JavaScript</button>
+    <button data-lang="python">Python</button>
+    <button data-lang="java">Java</button>
+    </div>
+
+  <pre><code class="language-javascript" id="code-block">
+// JavaScript 代码
+function greet(name) {
+  console.log(`Hello, ${name}!`);
+}
+</code></pre>
+
+  <script src="path/to/prism.js"></script>
+  <script>
+    // 在这里编写 JavaScript 代码来实现语言切换逻辑
+    const codeBlock = document.getElementById('code-block');
+    const tabButtons = document.querySelectorAll('.tab-buttons button');
+    const codeSnippets = { //不同语言的代码
+        javascript: `
+// JavaScript code
+function greet(name) {
+    console.log(\`Hello, \${name}!\`);
+}
+    `,
+        python: `
+# Python code
+def greet(name):
+    print(f"Hello, {name}!")
+    `,
+        java: `
+// Java code
+public class Main {
+    public static void main(String[] args) {
+        greet("World");
+    }
+
+    public static void greet(String name) {
+        System.out.println("Hello, " + name + "!");
+    }
+}
+    `
+    };
+
+    tabButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        // 移除所有按钮的 active 状态
+        tabButtons.forEach(btn => btn.classList.remove('active'));
+        // 设置当前点击的按钮为 active
+        button.classList.add('active');
+
+        const lang = button.dataset.lang;
+          codeBlock.className = `language-${lang}`; // 更新 code 元素的 class
+          codeBlock.textContent = codeSnippets[lang]; //设置对应代码
+        Prism.highlightElement(codeBlock); // 重新应用语法高亮
+      });
+    });
+  </script>
+</body>
+</html>
